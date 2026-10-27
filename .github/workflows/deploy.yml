@@ -1,0 +1,48 @@
+name: Deploy blog to GitHub Pages
+
+# Quartz Syncer 推送到 v5 后自动构建；也可在 Actions 页面手动重试。
+on:
+  push:
+    branches: [v5]
+  workflow_dispatch:
+
+# 构建读取仓库，部署通过 GitHub 的短期身份令牌发布 Pages。
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # 按配置检查插件；本项目的 npm 插件版本由 package-lock.json 固定。
+      # 安装或构建失败时任务停止，不上传不完整的网站。
+      - run: npx quartz plugin install --from-config
+      - run: npx quartz build
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # 仓库 Settings > Pages 的 Source 必须设为 GitHub Actions。
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
