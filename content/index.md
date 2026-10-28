@@ -1,6 +1,5 @@
 ---
-title: Welcome to Quartz
+title: 我的知识库
 ---
 
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+记录所学，连接知识。在这里，沿着主题目录探索学习、研究与实践。

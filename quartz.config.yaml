@@ -1,12 +1,12 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
-  pageTitle: Quartz 5
+  pageTitle: away-back 的知识库
   pageTitleSuffix: ""
   enableSPA: true
   enablePopovers: true
   analytics:
     provider: plausible
-  locale: en-US
+  locale: zh-CN
   baseUrl: away-back.github.io
   ignorePatterns:
     - private
@@ -155,15 +155,25 @@ plugins:
     enabled: true
   - source: "@quartz-community/folder-page"
     enabled: true
+    # 自动生成目录页，保留发布笔记的文件夹层级。
+    options:
+      showFolderCount: true
+      showSubfolders: true
+      prefixFolders: false
   - source: "@quartz-community/tag-page"
     enabled: true
   - source: "@quartz-community/explorer"
     enabled: true
+    options:
+      title: 知识目录
+      folderDefaultState: collapsed
+      folderClickBehavior: link
+      useSavedState: true
     layout:
       position: left
       priority: 50
   - source: "@quartz-community/graph"
-    enabled: true
+    enabled: false
     layout:
       position: right
       priority: 10
@@ -230,8 +240,7 @@ plugins:
     enabled: true
     options:
       links:
-        GitHub: https://github.com/jackyzha0/quartz
-        Discord Community: https://discord.gg/cRFFHYye7t
+        GitHub: https://github.com/away-back/away-back.github.io
     layout:
       position: footer
       priority: 50
